@@ -1,25 +1,26 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Web.Mvc;
-using System.Collections;
 using Arcarys.Models;
 using System.Net.Http.Headers;
+using System.Configuration;
 
 namespace ArcarysMolecules.Controllers
 {
     public class HomeController : Controller
     {
+
+        private string port = ConfigurationManager.AppSettings["port"];
+
         public ActionResult Index()
         {
             IEnumerable<Molecule> molecules = null;
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://localhost:16302/api/");
-                //HTTP GET
+                client.BaseAddress = new Uri("http://localhost:" + port + "/api/");           
                 var responseTask = client.GetAsync("molecules");
                 responseTask.Wait();
 
@@ -35,7 +36,7 @@ namespace ArcarysMolecules.Controllers
                 {
                     molecules = Enumerable.Empty<Molecule>();
 
-                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+                    ModelState.AddModelError(string.Empty, "Oops, ocurrió un error! Vuelva a intentarlo..");
                 }
             }
             return View(molecules);
@@ -54,7 +55,7 @@ namespace ArcarysMolecules.Controllers
             {
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri("http://localhost:16302/");
+                    client.BaseAddress = new Uri("http://localhost:" + port + "/");
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(
                         new MediaTypeWithQualityHeaderValue("application/json"));
@@ -63,7 +64,7 @@ namespace ArcarysMolecules.Controllers
                     newMol.Name = molecule.Name;
                     newMol.Atoms = GetMockedAtomos().Where(a => molecule.AtomsIds.Contains(a.Id)).ToList();
                     newMol.Links = GetMockedEnlaces().Where(a => molecule.LinksIds.Contains(a.Id)).ToList();
-                                        
+
                     var postTask = client.PostAsJsonAsync<Molecule>("api/molecules", newMol);
                     postTask.Wait();
 
@@ -86,7 +87,7 @@ namespace ArcarysMolecules.Controllers
                 FillDDL();
                 return View(molecule);
             }
-           
+
         }
 
         public ActionResult Details(string name)
@@ -95,7 +96,7 @@ namespace ArcarysMolecules.Controllers
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://localhost:16302/api/");
+                client.BaseAddress = new Uri("http://localhost:" + port + "/api/");
                 var responseTask = client.GetAsync("molecules/" + name);
                 responseTask.Wait();
 
@@ -117,7 +118,7 @@ namespace ArcarysMolecules.Controllers
             }
             return View(molecules);
         }
-                
+
         public ActionResult ValenceCheck()
         {
             FillDDL();
