@@ -1,0 +1,77 @@
+﻿@model List<Arcarys.Models.Atom>
+
+<table id="tblAtomos" class="table table-striped">
+    <thead id="tableHeadAtomos">
+        <tr>
+            <th>
+                Atomo
+            </th>
+            <th>
+                Valencia
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody id="tblBodyAtomos">
+
+        @foreach (var item in Model)
+            {
+            <tr id="ListaAtomo_@item.Id">       
+                <td>
+                    @Html.DisplayFor(modelItem => item.Element)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Valence)               
+                </td>
+                <td>
+                    <a href="#" onclick="EliminarAtomo(@item.Id)" class="btn btn-danger btn-xs">
+                        <span><i class="glyphicon glyphicon-remove"></i></span>
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+
+<style>
+    #tblAtomos {
+        width: 100%;
+    }
+
+        #tblEquipos thead, #tblAtomos tbody, #tblAtomos tr, #tblAtomos td, #tblAtomos th {
+            display: block;
+        }
+
+            #tblAtomos tr:after {
+                content: ' ';
+                display: block;
+                visibility: hidden;
+                clear: both;
+            }
+
+        #tblAtomos thead th {
+            height: 30px;
+            /*text-align: left;*/
+        }
+
+        #tblAtomos tbody {
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        #tblAtomos thead {
+            /* fallback */
+        }
+
+
+            #tblAtomos tbody td, #tblAtomos thead th {
+                width: 33%;
+                float: left;
+                text-align: center;
+            }
+</style>
+

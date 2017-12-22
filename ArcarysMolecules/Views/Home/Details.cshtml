@@ -1,0 +1,67 @@
+﻿@model Arcarys.Models.Molecule
+
+<div>
+    <h4>Detalles de Molécula</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <h4>Átomos</h4>
+    <hr />
+    @{
+        foreach(var atomo in Model.Atoms)
+        {
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(a => atomo.Element)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(a => atomo.Element)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(a => atomo.Valence)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(a => atomo.Valence)
+                </dd>
+            </dl>
+        }
+    }
+   
+</div>
+
+<div>
+    <h4>Enlaces</h4>
+    <hr />
+    @{
+        foreach (var link in Model.Links)
+        {
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(a => link.Order)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(a => link.Order)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(a => link.IsHydrogenLink)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(a => link.IsHydrogenLink)
+                </dd>
+            </dl>
+        }
+    }
+
+</div>
+<p>
+    @Html.ActionLink("Volver", "Index")
+</p>
